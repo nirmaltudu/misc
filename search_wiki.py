@@ -2,7 +2,7 @@
 For more details about how wiki search works, refer to https://www.mediawiki.org/wiki/API:Main_page
 '''
 import urllib
-import simplejson
+import json
 
 API_SEARCH = 'https://en.wikipedia.org/w/api.php'
 WIKI_BASE_URL = 'https://en.wikipedia.org/wiki/'
@@ -64,13 +64,13 @@ def getTitleContent(title):
     except UnicodeEncodeError:
         # TODO: Handle this
         return list()
-    jstr = simplejson.loads(parsedJson)
-    return [i['line'] for i in jstr['parse']['sections']]
+    jstr = json.loads(parsedJson)
+    return [i['line'].encode('ascii', 'ignore') for i in jstr['parse']['sections']]
 
 def getSearchResults(result):
-    j = simplejson.loads(result)
+    j = json.loads(result)
     for page in j['query']['search']:
-        title = page['title']
+        title = page['title'].encode('ascii', 'ignore')
         wiki_url = WIKI_BASE_URL + title
         sections = getTitleContent(title)
         print "Title: %s" % title
