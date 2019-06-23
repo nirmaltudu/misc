@@ -63,7 +63,7 @@ def getTitleContent(title):
         parsedJson = parse(title)
     except UnicodeEncodeError:
         # TODO: Handle this
-        continue
+        return list()
     jstr = simplejson.loads(parsedJson)
     return [i['line'] for i in jstr['parse']['sections']]
 
